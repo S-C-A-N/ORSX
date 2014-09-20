@@ -71,7 +71,7 @@ namespace ORSX
         {
             if (isDeployed && !_isDrilling)
             {
-                ActivateExtractORSX_();
+                ActivateExtractors();
             }
         }
 
@@ -80,8 +80,8 @@ namespace ORSX
         {
             if (isDeployed && _isDrilling)
             {
-                DisableExtractORSX_();
-                EnableExtractORSX_();
+                DisableExtractors();
+                EnableExtractors();
             }
         }
 
@@ -92,17 +92,17 @@ namespace ORSX
             {
                 if (_isDrilling)
                 {
-                    DisableExtractORSX_();
-                    EnableExtractORSX_();
+                    DisableExtractors();
+                    EnableExtractors();
                 }
                 else
                 {
-                    ActivateExtractORSX_();
+                    ActivateExtractors();
                 }
             }
         }
 
-        private List<ORSX_ModuleRailsExtraction> _extractORSX_;
+        private List<ORSX_ModuleRailsExtraction> _extractors;
 
         public Animation DeployAnimation
         {
@@ -123,7 +123,7 @@ namespace ORSX
         public override void OnStart(StartState state)
         {
             _state = state;
-            FindExtractORSX_();
+            FindExtractors();
             CheckAnimationState();
             DeployAnimation[deployAnimationName].layer = 3;
             if (drillAnimationName != "")
@@ -134,7 +134,7 @@ namespace ORSX
 
         public override void OnLoad(ConfigNode node)
         {
-            FindExtractORSX_();
+            FindExtractors();
             CheckAnimationState();
         }
 
@@ -144,11 +144,11 @@ namespace ORSX
             {
                 if (!isDeployed)
                 {
-                    DisableExtractORSX_();
+                    DisableExtractors();
                 }
                 else
                 {
-                    _isDrilling = _extractORSX_.Any(e => e.IsEnabled);
+                    _isDrilling = _extractors.Any(e => e.IsEnabled);
                     CheckForDrilling();
                 }
             }
@@ -167,13 +167,13 @@ namespace ORSX
                 SetRetractedState(-1000);
             }
         }
-        private void FindExtractORSX_()
+        private void FindExtractors()
         {
             if (vessel != null)
             {
                 if (part.Modules.Contains("ORSX_ModuleRailsExtraction"))
                 {
-                    _extractORSX_ = part.Modules.OfType<ORSX_ModuleRailsExtraction>().ToList();
+                    _extractors = part.Modules.OfType<ORSX_ModuleRailsExtraction>().ToList();
                 }
             }
         }
@@ -197,7 +197,7 @@ namespace ORSX
             Events["RetractDrill"].active = false;
             Events["DeployDrill"].active = true;
             PlayDeployAnimation(speed);
-            DisableExtractORSX_();
+            DisableExtractors();
         }
 
         private void SetDeployedState(int speed)
@@ -206,7 +206,7 @@ namespace ORSX
             Events["DeployDrill"].active = false;
             Events["RetractDrill"].active = true;
             PlayDeployAnimation(speed);
-            EnableExtractORSX_();
+            EnableExtractors();
         }
 
         private void PlayDeployAnimation(int speed)
@@ -219,10 +219,10 @@ namespace ORSX
             DeployAnimation.Play(deployAnimationName);
         }
 
-        private void DisableExtractORSX_()
+        private void DisableExtractors()
         {
-            if (vessel == null || _extractORSX_ == null) return;
-            foreach (var e in _extractORSX_)
+            if (vessel == null || _extractors == null) return;
+            foreach (var e in _extractors)
             {
                 e.isEnabled = false;
                 e.IsEnabled = false;
@@ -230,19 +230,19 @@ namespace ORSX
             _isDrilling = false;
         }
 
-        private void EnableExtractORSX_()
+        private void EnableExtractors()
         {
-            if (vessel == null || _extractORSX_ == null) return;
-            foreach (var e in _extractORSX_)
+            if (vessel == null || _extractors == null) return;
+            foreach (var e in _extractors)
             {
                 e.isEnabled = true;
             }
         }
 
-        private void ActivateExtractORSX_()
+        private void ActivateExtractors()
         {
-            if (vessel == null || _extractORSX_ == null) return;
-            foreach (var e in _extractORSX_)
+            if (vessel == null || _extractors == null) return;
+            foreach (var e in _extractors)
             {
                 e.IsEnabled = true;
             }

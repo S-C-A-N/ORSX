@@ -338,7 +338,7 @@ namespace ORSX
                     ms.receiveFNResource(power_supplied, resource_name);
                 }
             }
-            // check radiatORSX_
+            // check radiators
             foreach (var power_kvp in power_draw_items)
             {
                 ORSX_ResourceSuppliable ms = power_kvp.Key;

@@ -56,7 +56,7 @@ namespace ORSX
                 }
                 ConfigNode oceanic_resource_pack =
                     GameDatabase.Instance.GetConfigNodes("OCEANIC_RESOURCE_PACK_DEFINITION").FirstOrDefault();
-                Debug.Log("[ORSX_] Loading oceanic data from pack: " +
+                Debug.Log("[ORSX] Loading oceanic data from pack: " +
                           (oceanic_resource_pack.HasValue("name")
                               ? oceanic_resource_pack.GetValue("name")
                               : "unknown pack"));
@@ -68,10 +68,10 @@ namespace ORSX
                             .ToList();
                     bodyOceanicComposition =
                         oceanic_resource_list.Select(
-                            ORSX_c =>
+                            orsc =>
                                 new ORSX_OceanicResource(
-                                    ORSX_c.HasValue("resourceName") ? ORSX_c.GetValue("resourceName") : null,
-                                    double.Parse(ORSX_c.GetValue("abundance")), ORSX_c.GetValue("guiName"))).ToList();
+                                    orsc.HasValue("resourceName") ? orsc.GetValue("resourceName") : null,
+                                    double.Parse(orsc.GetValue("abundance")), orsc.GetValue("guiName"))).ToList();
                     if (bodyOceanicComposition.Any())
                     {
                         bodyOceanicComposition =
@@ -81,7 +81,7 @@ namespace ORSX
             }
             catch (Exception ex)
             {
-                Debug.Log("[ORSX_] Exception while loading oceanic resources : " + ex);
+                Debug.Log("[ORSX] Exception while loading oceanic resources : " + ex);
             }
             return bodyOceanicComposition;
         }

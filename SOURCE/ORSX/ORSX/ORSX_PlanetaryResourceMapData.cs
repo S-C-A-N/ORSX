@@ -41,7 +41,7 @@ namespace ORSX
         {
             string celestial_body_name = FlightGlobals.Bodies[body].bodyName;
             UrlDir.UrlConfig[] configs = GameDatabase.Instance.GetConfigs("PLANETARY_RESOURCE_DEFINITION");
-            Debug.Log("[ORSX_] Loading Planetary Resource Data. Length: " + configs.Length);
+            Debug.Log("[ORS] Loading Planetary Resource Data. Length: " + configs.Length);
             foreach (ORSX_ResourceAbundanceMarker abundance_marker in abundance_markers)
             {
                 removeAbundanceSphere(abundance_marker.getPlanetarySphere());
@@ -59,7 +59,7 @@ namespace ORSX
                 if (planetary_resource_config_node.GetValue("celestialBodyName") == celestial_body_name &&
                     planetary_resource_config_node != null)
                 {
-                    Debug.Log("[ORSX_] Loading Planetary Resource Data for " + celestial_body_name);
+                    Debug.Log("[ORSX] Loading Planetary Resource Data for " + celestial_body_name);
                     Texture2D map = GameDatabase.Instance.GetTexture(planetary_resource_config_node.GetValue("mapUrl"),
                         false);
                     if (map == null) continue;
@@ -81,8 +81,8 @@ namespace ORSX
                     }
                     if (planetary_resource_config_node.HasValue("scaleFactor"))
                     {
-                        string scale_factORSX_tr = planetary_resource_config_node.GetValue("scaleFactor");
-                        double scale_factor = double.Parse(scale_factORSX_tr);
+                        string scale_factorstr = planetary_resource_config_node.GetValue("scaleFactor");
+                        double scale_factor = double.Parse(scale_factorstr);
                         resource_info.setScaleFactor(scale_factor);
                     }
                     if (planetary_resource_config_node.HasValue("scaleMultiplier"))
@@ -126,7 +126,7 @@ namespace ORSX
                     }
 
                     body_abudnance_angles.Add(resource_gui_name, abundance_points_list.ToArray());
-                    Debug.Log("[ORSX_] " + abundance_points_list.Count + " high value " + resource_gui_name +
+                    Debug.Log("[ORSX] " + abundance_points_list.Count + " high value " + resource_gui_name +
                               " locations detected");
                 }
             }

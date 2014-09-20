@@ -145,7 +145,7 @@ namespace ORSX
                 }
                 else
                 {
-                    CheckFORSX_canning();
+                    CheckForscanning();
                 }
             }
             base.OnUpdate();
@@ -174,7 +174,7 @@ namespace ORSX
             }
         }
 
-        private void CheckFORSX_canning()
+        private void CheckForscanning()
         {
             if (_scanners.Any(e => e.isActive) && isDeployed)
             {

@@ -67,7 +67,7 @@ namespace ORSX
                 }
                 ConfigNode atmospheric_resource_pack =
                     GameDatabase.Instance.GetConfigNodes("ATMOSPHERIC_RESOURCE_PACK_DEFINITION").FirstOrDefault();
-                Debug.Log("[ORSX_] Loading atmospheric data from pack: " +
+                Debug.Log("[ORSX] Loading atmospheric data from pack: " +
                           (atmospheric_resource_pack.HasValue("name")
                               ? atmospheric_resource_pack.GetValue("name")
                               : "unknown pack"));
@@ -79,10 +79,10 @@ namespace ORSX
                             .ToList();
                     bodyAtmosphericComposition =
                         atmospheric_resource_list.Select(
-                            ORSX_c =>
+                            orsc =>
                                 new ORSX_AtmosphericResource(
-                                    ORSX_c.HasValue("resourceName") ? ORSX_c.GetValue("resourceName") : null,
-                                    double.Parse(ORSX_c.GetValue("abundance")), ORSX_c.GetValue("guiName"))).ToList();
+                                    orsc.HasValue("resourceName") ? orsc.GetValue("resourceName") : null,
+                                    double.Parse(orsc.GetValue("abundance")), orsc.GetValue("guiName"))).ToList();
                     if (bodyAtmosphericComposition.Any())
                     {
                         bodyAtmosphericComposition =

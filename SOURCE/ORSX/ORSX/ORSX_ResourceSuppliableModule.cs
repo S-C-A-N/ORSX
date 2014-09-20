@@ -200,7 +200,7 @@ namespace ORSX
                         if (manager == null)
                         {
                             manager = createResourceManagerForResource(resourcename);
-                            print("[ORSX_] Creating Resource Manager for Vessel " + vessel.GetName() + " (" + resourcename +
+                            print("[ORSX] Creating Resource Manager for Vessel " + vessel.GetName() + " (" + resourcename +
                                   ")");
                         }
                     }
@@ -208,7 +208,7 @@ namespace ORSX
                     {
                         manager = createResourceManagerForResource(resourcename);
 
-                        print("[ORSX_] Creating Resource Manager for Vessel " + vessel.GetName() + " (" + resourcename +
+                        print("[ORSX] Creating Resource Manager for Vessel " + vessel.GetName() + " (" + resourcename +
                               ")");
                     }
                 }
@@ -226,7 +226,7 @@ namespace ORSX
                     if (!getOvermanagerForResource(resourcename).hasManagerForVessel(vessel))
                     {
                         manager = createResourceManagerForResource(resourcename);
-                        print("[ORSX_] Creating Resource Manager for Vessel " + vessel.GetName() + " (" + resourcename +
+                        print("[ORSX] Creating Resource Manager for Vessel " + vessel.GetName() + " (" + resourcename +
                               ")");
                     }
                     else
@@ -235,7 +235,7 @@ namespace ORSX
                         if (manager == null)
                         {
                             manager = createResourceManagerForResource(resourcename);
-                            print("[ORSX_] Creating Resource Manager for Vessel " + vessel.GetName() + " (" + resourcename +
+                            print("[ORSX] Creating Resource Manager for Vessel " + vessel.GetName() + " (" + resourcename +
                                   ")");
                         }
                     }
