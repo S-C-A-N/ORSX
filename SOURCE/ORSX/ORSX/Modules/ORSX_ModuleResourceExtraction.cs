@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ORSX
 {
-    public class ORSX_ModuleExtraction : ORSX_ResourceSuppliableModule
+    public class ORSX_ModuleResourceExtraction : ORSX_ResourceSuppliableModule, IAnimatedModule
     {
         //Persistent True
         [KSPField(isPersistant = true)]
@@ -274,5 +274,20 @@ namespace ORSX
             node.AddValue("lastUpdateTime", lastUpdateTime);
         }
 
+
+        public void EnableModule()
+        {
+            this.isEnabled = true;
+        }
+
+        public void DisableModule()
+        {
+            this.isEnabled = false;
+        }
+
+        public bool ModuleIsActive()
+        {
+            return this.IsEnabled;
+        }
     }
 }

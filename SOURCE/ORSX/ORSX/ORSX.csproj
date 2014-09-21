@@ -44,6 +44,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modules\IAnimatedModule.cs" />
     <Compile Include="Modules\ORSX_AnimatedParticleExtractor.cs" />
     <Compile Include="Modules\ORSX_AnimationGroup.cs" />
     <Compile Include="Modules\ORSX_AtmoExtractor.cs" />

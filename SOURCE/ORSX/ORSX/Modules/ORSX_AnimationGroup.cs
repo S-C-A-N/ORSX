@@ -6,13 +6,6 @@ using UnityEngine;
 
 namespace ORSX //GOOD
 {
-    public interface IAnimatedModule
-    {
-        void EnableModule();
-        void DisableModule();
-        bool ModuleIsActive();
-    }
-
     public class ORSX_AnimationGroup : PartModule
     {
         [KSPField]
@@ -124,18 +117,25 @@ namespace ORSX //GOOD
 
         public override void OnUpdate()
         {
-            if (vessel != null)
+            try
             {
-                if (!isDeployed)
+                if (vessel != null)
                 {
-                    DisableModules();
+                    if (!isDeployed)
+                    {
+                        DisableModules();
+                    }
+                    else
+                    {
+                        CheckForActivity();
+                    }
                 }
-                else
-                {
-                    CheckForActivity();
-                }
+                base.OnUpdate();
             }
-            base.OnUpdate();
+            catch (Exception)
+            {
+                print("[ORSX] - ERROR IN OnUpdate of ORSX_AnimationGroup");
+            }
         }
 
 
