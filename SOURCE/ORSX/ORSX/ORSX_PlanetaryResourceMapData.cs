@@ -207,59 +207,60 @@ namespace ORSX
                     removeAbundanceSphere(abundance_marker.getScaledSphere());
                 }
                 abundance_markers.Clear();
+
                 CelestialBody celbody = FlightGlobals.currentMainBody;
                 sphere_texture = body_resource_maps[displayed_resource].getDisplayTexturePath();
                 Vector2d[] abundance_points_list = body_abudnance_angles[displayed_resource];
-                if (abundance_points_list != null && celbody.pqsController != null)
-                {
-                    foreach (Vector2d abundance_point in abundance_points_list)
+                    if (abundance_points_list != null && celbody.pqsController != null)
                     {
-                        double theta = abundance_point.x;
-                        double phi = abundance_point.y;
-                        Vector3d up = celbody.GetSurfaceNVector(phi, theta).normalized;
-                        double surface_height =
-                            celbody.pqsController.GetSurfaceHeight(QuaternionD.AngleAxis(theta, Vector3d.down)*
-                                                                   QuaternionD.AngleAxis(phi, Vector3d.forward)*
-                                                                   Vector3d.right);
-                        GameObject resource_prim = createAbundanceSphere();
-                        GameObject resource_prim_scaled = createAbundanceSphere();
+                        foreach (Vector2d abundance_point in abundance_points_list)
+                        {
+                            double theta = abundance_point.x;
+                            double phi = abundance_point.y;
+                            Vector3d up = celbody.GetSurfaceNVector(phi, theta).normalized;
+                            double surface_height =
+                                celbody.pqsController.GetSurfaceHeight(QuaternionD.AngleAxis(theta, Vector3d.down)*
+                                                                       QuaternionD.AngleAxis(phi, Vector3d.forward)*
+                                                                       Vector3d.right);
+                            GameObject resource_prim = createAbundanceSphere();
+                            GameObject resource_prim_scaled = createAbundanceSphere();
 
-                        Vector3d center = celbody.position + surface_height*up;
-                        Vector3d scaledcenter = ScaledSpace.LocalToScaledSpace(celbody.position) +
-                                                surface_height*up*ScaledSpace.InverseScaleFactor;
+                            Vector3d center = celbody.position + surface_height*up;
+                            Vector3d scaledcenter = ScaledSpace.LocalToScaledSpace(celbody.position) +
+                                                    surface_height*up*ScaledSpace.InverseScaleFactor;
 
-                        Transform scaled_trans =
-                            ScaledSpace.Instance.scaledSpaceTransforms.Single(t => t.name == celbody.name);
-                        resource_prim_scaled.transform.position = scaledcenter;
-                        resource_prim_scaled.transform.localScale = sphere_scale_scaled*
-                                                                    (FlightGlobals.currentMainBody.Radius/
-                                                                     FlightGlobals.Bodies[
-                                                                         ORSX_GameConstants.REF_BODY_KERBIN].Radius);
-                        resource_prim_scaled.transform.localRotation = Quaternion.identity;
-                        resource_prim_scaled.transform.parent = scaled_trans;
-                        resource_prim_scaled.layer = 10;
+                            Transform scaled_trans =
+                                ScaledSpace.Instance.scaledSpaceTransforms.Single(t => t.name == celbody.name);
+                            resource_prim_scaled.transform.position = scaledcenter;
+                            resource_prim_scaled.transform.localScale = sphere_scale_scaled*
+                                                                        (FlightGlobals.currentMainBody.Radius/
+                                                                         FlightGlobals.Bodies[
+                                                                             ORSX_GameConstants.REF_BODY_KERBIN].Radius);
+                            resource_prim_scaled.transform.localRotation = Quaternion.identity;
+                            resource_prim_scaled.transform.parent = scaled_trans;
+                            resource_prim_scaled.layer = 10;
 
-                        resource_prim.transform.position = center;
-                        resource_prim.transform.parent = celbody.transform;
-                        resource_prim.transform.localScale = sphere_scale*
-                                                             (FlightGlobals.currentMainBody.Radius/
-                                                              FlightGlobals.Bodies[ORSX_GameConstants.REF_BODY_KERBIN]
-                                                                  .Radius);
-                        resource_prim.transform.localRotation = Quaternion.identity;
+                            resource_prim.transform.position = center;
+                            resource_prim.transform.parent = celbody.transform;
+                            resource_prim.transform.localScale = sphere_scale*
+                                                                 (FlightGlobals.currentMainBody.Radius/
+                                                                  FlightGlobals.Bodies[
+                                                                      ORSX_GameConstants.REF_BODY_KERBIN]
+                                                                      .Radius);
+                            resource_prim.transform.localRotation = Quaternion.identity;
 
-                        var abundance_marker = new ORSX_ResourceAbundanceMarker(resource_prim_scaled, resource_prim);
-                        abundance_markers.Add(abundance_marker);
-                    }
-                    map_body = current_body;
-                    map_resource = displayed_resource;
-                    stored_scale = ScaledSpace.ScaleFactor;
+                            var abundance_marker = new ORSX_ResourceAbundanceMarker(resource_prim_scaled, resource_prim);
+                            abundance_markers.Add(abundance_marker);
+                        }
+                        map_body = current_body;
+                        map_resource = displayed_resource;
+                        stored_scale = ScaledSpace.ScaleFactor;
                 }
-                //celbody.renderer.material.mainTexture.
             }
             else
             {
                 if (body_resource_maps.ContainsKey(displayed_resource) &&
-                    FlightGlobals.currentMainBody.flightGlobalsIndex == map_body && displayed_resource == map_resource)
+                    FlightGlobals.currentMainBody.flightGlobalsIndex == map_body && displayed_resource == map_resource )
                 {
                     CelestialBody celbody = FlightGlobals.currentMainBody;
                     foreach (ORSX_ResourceAbundanceMarker abundance_marker in abundance_markers)

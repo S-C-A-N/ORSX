@@ -44,16 +44,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Modules\ORSX_AnimatedDrill.cs" />
-    <Compile Include="Modules\ORSX_AnimatedExtractor.cs" />
     <Compile Include="Modules\ORSX_AnimatedParticleExtractor.cs" />
-    <Compile Include="Modules\ORSX_AnimatedScanner.cs" />
+    <Compile Include="Modules\ORSX_AnimationGroup.cs" />
     <Compile Include="Modules\ORSX_AtmoExtractor.cs" />
     <Compile Include="Modules\ORSX_ModuleAirIntake.cs" />
     <Compile Include="Modules\ORSX_ModuleAirScoop.cs" />
     <Compile Include="Modules\ORSX_ModuleParticleCollector.cs" />
-    <Compile Include="Modules\ORSX_ModuleRailsExtraction.cs" />
-    <Compile Include="Modules\ORSX_SurfaceScanner.cs" />
     <Compile Include="Modules\ORSX_AtmosphericExtractor.cs" />
     <Compile Include="ORSX_AtmosphericResource.cs" />
     <Compile Include="ORSX_AtmosphericResourceHandler.cs" />
