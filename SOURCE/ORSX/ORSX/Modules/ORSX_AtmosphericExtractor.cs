@@ -1,5 +1,6 @@
 ﻿namespace ORSX
 {
+    //TODO: Merge this with AirScoop
     internal class ORSX_AtmosphericExtractor : ORSX_ResourceSuppliableModule
     {
         //Persistent True

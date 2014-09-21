@@ -1,27 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 namespace ORSX
 {
     public class ORSX_OceanicResourceHandler
     {
-        protected static Dictionary<int, List<ORSX_OceanicResource>> body_oceanic_resource_list =
-            new Dictionary<int, List<ORSX_OceanicResource>>();
+        protected static Dictionary<int, List<ORSX_OceanicResource>> body_oceanic_resource_list = new Dictionary<int, List<ORSX_OceanicResource>>();
 
         public static double getOceanicResourceContent(int refBody, string resourcename)
         {
             List<ORSX_OceanicResource> bodyOceanicComposition = getOceanicCompositionForBody(refBody);
-            ORSX_OceanicResource resource =
-                bodyOceanicComposition.FirstOrDefault(oor => oor.getResourceName() == resourcename);
-            return resource != null ? resource.getResourceAbundance() : 0;
+            if (bodyOceanicComposition.Count > 0)
+            {
+                foreach (ORSX_OceanicResource bodyAtmosphericResource in bodyOceanicComposition)
+                {
+                    if (bodyAtmosphericResource.getResourceName() == resourcename)
+                    {
+                        return bodyAtmosphericResource.getResourceAbundance();
+                    }
+                }
+            }
+            return 0;
         }
 
         public static double getOceanicResourceContent(int refBody, int resource)
         {
             List<ORSX_OceanicResource> bodyOceanicComposition = getOceanicCompositionForBody(refBody);
-            if (bodyOceanicComposition.Count > resource) return bodyOceanicComposition[resource].getResourceAbundance();
+            if (bodyOceanicComposition.Count > resource)
+            {
+                return bodyOceanicComposition[resource].getResourceAbundance();
+            }
             return 0;
         }
 
@@ -47,41 +58,37 @@ namespace ORSX
 
         public static List<ORSX_OceanicResource> getOceanicCompositionForBody(int refBody)
         {
-            var bodyOceanicComposition = new List<ORSX_OceanicResource>();
+            List<ORSX_OceanicResource> bodyOceanicComposition = new List<ORSX_OceanicResource>();
             try
             {
                 if (body_oceanic_resource_list.ContainsKey(refBody))
                 {
                     return body_oceanic_resource_list[refBody];
                 }
-                ConfigNode oceanic_resource_pack =
-                    GameDatabase.Instance.GetConfigNodes("OCEANIC_RESOURCE_PACK_DEFINITION").FirstOrDefault();
-                Debug.Log("[ORSX] Loading oceanic data from pack: " +
-                          (oceanic_resource_pack.HasValue("name")
-                              ? oceanic_resource_pack.GetValue("name")
-                              : "unknown pack"));
-                if (oceanic_resource_pack != null)
+                else
                 {
-                    List<ConfigNode> oceanic_resource_list =
-                        oceanic_resource_pack.GetNodes("OCEANIC_RESOURCE_DEFINITION")
-                            .Where(res => res.GetValue("celestialBodyName") == FlightGlobals.Bodies[refBody].name)
-                            .ToList();
-                    bodyOceanicComposition =
-                        oceanic_resource_list.Select(
-                            orsc =>
-                                new ORSX_OceanicResource(
-                                    orsc.HasValue("resourceName") ? orsc.GetValue("resourceName") : null,
-                                    double.Parse(orsc.GetValue("abundance")), orsc.GetValue("guiName"))).ToList();
-                    if (bodyOceanicComposition.Any())
+                    ConfigNode[] bodyOceanicResourceList = GameDatabase.Instance.GetConfigNodes("ORSX_OCEANIC_RESOURCE").Where(res => res.GetValue("celestialBodyName") == FlightGlobals.Bodies[refBody].name).ToArray();
+                    foreach (ConfigNode bodyOceanicConfig in bodyOceanicResourceList)
                     {
-                        bodyOceanicComposition =
-                            bodyOceanicComposition.OrderByDescending(bacd => bacd.getResourceAbundance()).ToList();
+                        string resourcename = null;
+                        if (bodyOceanicConfig.HasValue("resourceName"))
+                        {
+                            resourcename = bodyOceanicConfig.GetValue("resourceName");
+                        }
+                        double resourceabundance = double.Parse(bodyOceanicConfig.GetValue("abundance"));
+                        string displayname = bodyOceanicConfig.GetValue("guiName");
+                        ORSX_OceanicResource bodyOceanicResource = new ORSX_OceanicResource(resourcename, resourceabundance, displayname);
+                        bodyOceanicComposition.Add(bodyOceanicResource);
+                    }
+                    if (bodyOceanicComposition.Count > 1)
+                    {
+                        bodyOceanicComposition = bodyOceanicComposition.OrderByDescending(bacd => bacd.getResourceAbundance()).ToList();
                     }
                 }
             }
             catch (Exception ex)
             {
-                Debug.Log("[ORSX] Exception while loading oceanic resources : " + ex);
+
             }
             return bodyOceanicComposition;
         }

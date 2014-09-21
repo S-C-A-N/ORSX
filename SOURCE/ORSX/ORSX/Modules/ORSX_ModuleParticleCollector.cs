@@ -145,7 +145,7 @@ namespace ORSX
                         && respcent > 0 
                         && vessel.altitude >= ORSX_Helper.getMaxAtmosphericAltitude(vessel.mainBody))
                     {
-                        print("[ORSX_] PASS ");
+                        print("[ORSX] PASS ");
                         /** RAILS **/
                         if (Time.timeSinceLevelLoad < 1.0f || !FlightGlobals.ready)
                         {

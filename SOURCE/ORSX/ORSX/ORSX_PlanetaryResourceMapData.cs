@@ -40,7 +40,7 @@ namespace ORSX
         public static void loadPlanetaryResourceData(int body)
         {
             string celestial_body_name = FlightGlobals.Bodies[body].bodyName;
-            UrlDir.UrlConfig[] configs = GameDatabase.Instance.GetConfigs("PLANETARY_RESOURCE_DEFINITION");
+            UrlDir.UrlConfig[] configs = GameDatabase.Instance.GetConfigs("ORSX_PLANETARY_RESOURCE");
             Debug.Log("[ORS] Loading Planetary Resource Data. Length: " + configs.Length);
             foreach (ORSX_ResourceAbundanceMarker abundance_marker in abundance_markers)
             {
