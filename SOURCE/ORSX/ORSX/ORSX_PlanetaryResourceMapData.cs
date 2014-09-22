@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ORSX
 {
-    public class ORSX_PlanetaryResourceMapData : MonoBehaviour
+    public class ORSX_PlanetaryResourceMapData
     {
         private static readonly Dictionary<string, ORSX_PlanetaryResourceInfo> body_resource_maps =
             new Dictionary<string, ORSX_PlanetaryResourceInfo>();
@@ -64,6 +64,20 @@ namespace ORSX
                         false);
                     if (map == null) continue;
 
+                    //Texture managing addons can cause a texture to be able to load (ie map != null)
+                    //but not be readable, at least not by GetPixel,
+                    //which is called repeatedly at the end of the load method (in the getPixelAbundanceValue method)
+                    //This tests the texture once to make sure it works properly before allowing it to continue
+                    try
+                    {
+                        map.GetPixel(1, 1);
+                    }
+                    catch (UnityException e)
+                    {
+                        Debug.Log("Stop Doing Dumb Things With Your Map Textures: " + e);
+                        continue;
+                    }
+
                     string resource_gui_name = planetary_resource_config_node.GetValue("name");
 
                     if (body_resource_maps.ContainsKey(resource_gui_name)) continue; // skip duplicates
@@ -98,7 +112,7 @@ namespace ORSX
                     }
                     else
                     {
-                        string tex_path = planetary_resource_config_node.GetValue("WarpPlugin/resource_point");
+                        string tex_path = planetary_resource_config_node.GetValue("ORSX/resource_point"); //Rename to whatever folder ORSX will be in; put default resource point texture there
                         resource_info.setDisplayTexture(tex_path);
                     }
                     if (planetary_resource_config_node.HasValue("displayThreshold"))
@@ -130,6 +144,19 @@ namespace ORSX
                               " locations detected");
                 }
             }
+        }
+
+        public static double getPixelAbundanceValue(int body, string resourcename, double lat, double lng)
+        {
+            if (body != current_body)
+                loadPlanetaryResourceData(body);
+            if (body_resource_maps.ContainsKey(resourcename))
+            {
+                ORSX_PlanetaryResourceInfo resource_info = body_resource_maps[resourcename];
+                return resource_info.getLatLongAbundanceValue(lat, lng);
+            }
+            else
+                return 0;
         }
 
         public static ORSX_PlanetaryResourcePixel getResourceAvailabilityByRealResourceName(int body, string resourcename,
@@ -313,15 +340,15 @@ namespace ORSX
                 resource_prim.renderer.receiveShadows = false;
                 resource_prim.renderer.enabled = false;
                 resource_prim.renderer.castShadows = false;
-                Destroy(resource_prim.collider);
+                MonoBehaviour.Destroy(resource_prim.collider);
                 sphere = resource_prim;
             }
-            return (GameObject) Instantiate(sphere);
+            return (GameObject) MonoBehaviour.Instantiate(sphere);
         }
 
         protected static void removeAbundanceSphere(GameObject go)
         {
-            Destroy(go);
+            MonoBehaviour.Destroy(go);
         }
 
         protected static bool lineOfSightToPosition(Vector3d a, CelestialBody referenceBody)
